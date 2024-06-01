@@ -56,12 +56,11 @@
             var years = parseInt(document.getElementById('years').value);
             var populationData = [];
             var labels = [];
-            var currentYear = new Date().getFullYear();
 
             for (var i = -Math.abs(years); i <= Math.abs(years); i++) {
                 var population = populationModel(initialPopulation, growthRate, i);
                 populationData.push(parseFloat(population.toFixed(0))); // Membulatkan angka populasi
-                labels.push(currentYear + i); // Menambahkan tahun sebagai label
+                labels.push(2023 + i); // Menambahkan tahun sebagai label
             }
 
             if (populationChart) {
