@@ -11,31 +11,31 @@
 <body>
     <header class="header">
         <div class="logo-container">
-            <img src="img/logo 1.png" alt="Logo 1" class="logo square-logo">
-            <img src="img/logo 2.png" alt="Logo 2" class="logo square-logo">
-            <img src="img/logo 3.png" alt="Logo 3" class="logo">
+            <img src="img/logo1.png" alt="Logo 1" class="logo square-logo">
+            <img src="img/logo2.png" alt="Logo 2" class="logo square-logo">
+            <img src="img/logo3.png" alt="Logo 3" class="logo">
         </div>
         <h1>Eksponensial Growth Penduduk Kota Bandar Lampung</h1>
-        <h2>Visualisasi Data Sains</h2>
+        <h2 class="subtitle">Visualisasi Dalam Sains</h2>
     </header>
     <main class="container">
         <div class="input-container">
             <label for="initialPopulation">Initial Population:</label>
             <input type="number" id="initialPopulation" value="9313980" min="0" aria-describedby="initialPopulationDesc">
-           
+            <small id="initialPopulationDesc">Enter the initial population size.</small>
         </div>
         <div class="input-container">
             <label for="growthRate">Growth Rate:</label>
             <input type="number" id="growthRate" step="0.01" min="0" max="1" value="0.0244" aria-describedby="growthRateDesc">
-           
+            <small id="growthRateDesc">Enter the annual growth rate (e.g., 0.024 for 2.4%).</small>
         </div>
         <div class="input-container">
             <label for="years">Years:</label>
             <input type="number" id="years" value="5" aria-describedby="yearsDesc">
-           
+            <small id="yearsDesc">Enter the number of years to project.</small>
         </div>
         <button onclick="calculatePopulation()">Run</button>
-        <div class="chart-container">
+        <div class="chart-container" aria-live="polite">
             <canvas id="populationChart" aria-label="Population Growth Chart" role="img"></canvas>
         </div>
         <div class="group-info">
@@ -45,30 +45,51 @@
         </div>
     </main>
     <script>
-        var populationChart;
+        let populationChart;
 
         function populationModel(P0, r, t) {
             return P0 * Math.exp(r * t);
         }
 
-        function calculatePopulation() {
-            var initialPopulation = parseFloat(document.getElementById('initialPopulation').value);
-            var growthRate = parseFloat(document.getElementById('growthRate').value);
-            var years = parseInt(document.getElementById('years').value);
-            var populationData = [];
-            var labels = [];
+        function validateInputs(initialPopulation, growthRate, years) {
+            if (initialPopulation < 0) {
+                alert("Initial population must be non-negative.");
+                return false;
+            }
+            if (growthRate < 0 || growthRate > 1) {
+                alert("Growth rate must be between 0 and 1.");
+                return false;
+            }
+            if (years < 0) {
+                alert("Years must be non-negative.");
+                return false;
+            }
+            return true;
+        }
 
-            for (var i = -Math.abs(years); i <= Math.abs(years); i++) {
-                var population = populationModel(initialPopulation, growthRate, i);
-                populationData.push(parseFloat(population.toFixed(0))); // Membulatkan angka populasi
-                labels.push(2023 + i); // Menambahkan tahun sebagai label
+        function calculatePopulation() {
+            const initialPopulation = parseFloat(document.getElementById('initialPopulation').value);
+            const growthRate = parseFloat(document.getElementById('growthRate').value);
+            const years = parseInt(document.getElementById('years').value);
+
+            if (!validateInputs(initialPopulation, growthRate, years)) {
+                return;
+            }
+
+            const populationData = [];
+            const labels = [];
+
+            for (let i = -Math.abs(years); i <= Math.abs(years); i++) {
+                const population = populationModel(initialPopulation, growthRate, i);
+                populationData.push(parseFloat(population.toFixed(0)));
+                labels.push(2023 + i);
             }
 
             if (populationChart) {
                 populationChart.destroy();
             }
 
-            var ctx = document.getElementById('populationChart').getContext('2d');
+            const ctx = document.getElementById('populationChart').getContext('2d');
             populationChart = new Chart(ctx, {
                 type: 'line',
                 data: {
@@ -100,8 +121,9 @@
             });
         }
 
-        // Inisialisasi grafik dengan nilai default
-        calculatePopulation();
+        document.addEventListener('DOMContentLoaded', (event) => {
+            calculatePopulation();
+        });
     </script>
 </body>
 </html>
