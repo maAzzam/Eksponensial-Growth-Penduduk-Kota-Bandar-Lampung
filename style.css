@@ -32,7 +32,7 @@ body {
 }
 
 .subtitle {
-    font-size: 2em; /* Half the size of the main title */
+    font-size: 1.5em; /* Half the size of the main title */
     margin-top: 10px; /* Adds space between the title and the subtitle */
 }
 
