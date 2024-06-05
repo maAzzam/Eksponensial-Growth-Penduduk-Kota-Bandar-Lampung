@@ -27,6 +27,15 @@ body {
     text-align: center;
 }
 
+.header h1 {
+    font-size: 2em; /* Adjust font size of the main title */
+}
+
+.subtitle {
+    font-size: 1em; /* Half the size of the main title */
+    margin-top: 10px; /* Adds space between the title and the subtitle */
+}
+
 .logo-container {
     display: flex;
     justify-content: center;
